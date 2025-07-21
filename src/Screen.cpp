@@ -11,7 +11,6 @@
 Screen::Screen(int width, int height, Player player) {
     this->width = width;
     this->height = height;
-    // this->camera = { 0 };
     this->camera.target = player.getPosition();
     this->camera.offset = (Vector2){ width/2.0f, height/2.0f };
     this->camera.rotation = 0.0f;

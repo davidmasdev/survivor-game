@@ -20,6 +20,8 @@ int main()
 
     Screen screen = Screen(screenWidth, screenHeight, player);
 
+
+
     while (!WindowShouldClose())
     {
         player.handleKeys();

@@ -28,7 +28,11 @@ add_executable(${PROJECT_NAME}
         src/Player.cpp
         src/Player.h
         src/Screen.cpp
-        src/Screen.h)
+        src/Screen.h
+        src/Grid.cpp
+        src/Grid.h
+        src/Cell.cpp
+        src/Cell.h)
 target_sources(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_INCLUDE})
 target_link_libraries(${PROJECT_NAME} PRIVATE raylib)
