@@ -38,3 +38,11 @@ void Player::move(Vector2 newVelocity) {
 Vector2 Player::getPosition() {
     return this->position;
 }
+
+Vector2 Player::getVelocity() {
+    return this->velocity;
+}
+
+float Player::getDeltaTime() {
+    return this->deltaTime;
+}

@@ -15,10 +15,10 @@ int main()
 
     SetTargetFPS(60);
 
-    Screen screen = Screen(screenWidth, screenHeight);
 
     Player player = Player((float)screenWidth/2, (float)screenHeight/2);
 
+    Screen screen = Screen(screenWidth, screenHeight, player);
 
     while (!WindowShouldClose())
     {

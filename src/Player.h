@@ -19,6 +19,8 @@ public:
     Player(float x, float y);
     void handleKeys();
     Vector2 getPosition();
+    Vector2 getVelocity();
+    float getDeltaTime();
 };
 
 #define PLAYER_H

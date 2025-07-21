@@ -14,8 +14,9 @@ class Screen {
 private:
     int width;
     int height;
+    Camera2D camera;
 public:
-    Screen(int width, int height);
+    Screen(int width, int height, Player player);
     void draw(Player player);
 };
 
