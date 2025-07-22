@@ -3,6 +3,7 @@
 #include "raylib.h"
 #include <iostream>
 
+#include "Grid.h"
 #include "Player.h"
 #include "Screen.h"
 
@@ -15,18 +16,17 @@ int main()
 
     SetTargetFPS(60);
 
-
-    Player player = Player((float)screenWidth/2, (float)screenHeight/2);
+    Player player = Player( 0, 0);
 
     Screen screen = Screen(screenWidth, screenHeight, player);
 
-
+    Grid grid = Grid();
 
     while (!WindowShouldClose())
     {
         player.handleKeys();
 
-        screen.draw(player);
+        screen.draw(player, grid);
 
     }
 

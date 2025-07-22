@@ -12,10 +12,10 @@
 
 class Grid {
 private:
-    std::vector<std::vector<Cell>> cells;
+    std::vector<Cell> cells;
 public:
     Grid();
-    std::vector<std::vector<Cell>> getCells();
+    std::vector<Cell> getCells();
 };
 
 

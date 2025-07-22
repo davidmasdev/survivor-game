@@ -3,16 +3,21 @@
 //
 
 #include "Grid.h"
+#include "raylib.h"
+
+const int CELL_SIZE = 16;
 
 Grid::Grid() {
-    for (int i=0; i<10; i++) {
-        for (int j=0; j<10; j++) {
-            this->cells[i].push_back(Cell());
+    Texture2D mapTexture = LoadTexture("../resources/tiles/tilemap.png");
+
+    for (float i=-32; i<32; i++) {
+        for (float j=-32; j<32; j++) {
+            this->cells.push_back(Cell(mapTexture, Vector2(i*CELL_SIZE, j*CELL_SIZE)));
         }
     }
 }
 
 
-std::vector<std::vector<Cell>> Grid::getCells() {
+std::vector<Cell> Grid::getCells() {
     return this->cells;
 }

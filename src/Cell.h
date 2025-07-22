@@ -10,9 +10,13 @@
 
 class Cell {
 private:
-    Texture2D texture_;
+    Texture2D texture;
+    Vector2 position;
+
 public:
-    Cell(Texture2D texture);
+    Cell(Texture2D texture, Vector2 position);
+    Texture2D getTexture();
+    Vector2 getPosition();
 };
 
 
