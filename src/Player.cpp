@@ -6,6 +6,8 @@
 
 #include <cmath>
 
+const int CELL_SIZE = 16;
+
 Player::Player(float x, float y) {
     this->position = { x , y };
     this->velocity = { 0 , 0};
@@ -26,7 +28,8 @@ void Player::handleKeys() {
         velocity.x /= length;
         velocity.y /= length;
     }
-
+    if (position.x + velocity.x * speed * deltaTime < 32 * CELL_SIZE && position.y + velocity.y * speed * deltaTime < 32 * CELL_SIZE &&
+        position.x + velocity.x * speed * deltaTime > -32 * CELL_SIZE && position.y + velocity.y * speed * deltaTime > -32 * CELL_SIZE)
     move(velocity);
 }
 

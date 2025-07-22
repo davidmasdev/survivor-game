@@ -33,10 +33,10 @@ void Screen::draw(Player player, Grid grid) {
 
     // Adjust camera speed based on zoom level
     float baseLerp = 0.9f;
-    float lerp = baseLerp * camera.zoom; // Linear scaling with zoom
+    // float lerp = baseLerp * camera.zoom; // Linear scaling with zoom
 
     // Alternative approaches:
-    // float lerp = baseLerp * std::sqrt(camera.zoom); // Square root scaling (more gradual)
+    float lerp = baseLerp * std::sqrt(camera.zoom); // Square root scaling (more gradual)
     // float lerp = std::min(baseLerp * camera.zoom, 0.98f); // With maximum cap
     // float lerp = baseLerp + (camera.zoom - 1.0f) * 0.5f; // Add offset based on zoom
 
