@@ -7,6 +7,8 @@
 
 #ifndef ENEMY_H
 #define ENEMY_H
+#include <vector>
+
 #include "Player.h"
 #include "raylib.h"
 
@@ -22,7 +24,7 @@ public:
     Enemy(Vector2 position);
     Vector2 getPosition();
     Texture2D getTexture();
-    void moveToPlayer(Vector2 playerPosition);
+    void moveToPlayer(Vector2 playerPosition, std::vector<Enemy> enemies);
 };
 
 

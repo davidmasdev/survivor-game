@@ -6,6 +6,7 @@
 
 #include <cmath>
 #include <ranges>
+#include <vector>
 
 const float DELTATIME = 0.016f;
 const int CELL_SIZE = 16;
@@ -28,24 +29,100 @@ Texture2D Enemy::getTexture() {
     return this->texture;
 }
 
-void Enemy::moveToPlayer(Vector2 playerPosition) {
+void Enemy::moveToPlayer(Vector2 playerPosition, std::vector<Enemy> enemies) {
     velocity = Vector2{0, 0};
+    const float enemyRadius = 6.0f;
+    const float playerRadius = 6.0f;
 
-    if (position.x - playerPosition.x < 0) velocity.x+=1;
-    if (position.x - playerPosition.x > 0) velocity.x-=1;
-    if (position.y - playerPosition.y < 0) velocity.y+=1;
-    if (position.y - playerPosition.y > 0) velocity.y-=1;
+    // Calculate direction to player
+    Vector2 direction = {playerPosition.x - position.x, playerPosition.y - position.y};
 
-
-    float length = std::sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
+    // Normalize direction
+    float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
     if (length > 0) {
-        velocity.x /= length;
-        velocity.y /= length;
+        direction.x /= length;
+        direction.y /= length;
     }
-    if (position.x + velocity.x * speed * DELTATIME < 32 * CELL_SIZE && position.y + velocity.y * speed * DELTATIME < 32 * CELL_SIZE &&
-        position.x + velocity.x * speed * DELTATIME > -32 * CELL_SIZE && position.y + velocity.y * speed * DELTATIME > -32 * CELL_SIZE) {
-        position.x += velocity.x * speed * DELTATIME;
-        position.y += velocity.y * speed * DELTATIME;
+
+    velocity = direction;
+
+    // Calculate proposed new position
+    Vector2 newPosition = {
+        position.x + velocity.x * speed * DELTATIME,
+        position.y + velocity.y * speed * DELTATIME
+    };
+
+    // Check collision with other enemies
+    bool collisionDetected = false;
+    Vector2 separationForce = {0, 0};
+
+    for (auto& enemy : enemies) {
+        // Skip self-comparison (assuming you pass the current enemy in the vector)
+        if (&enemy == this) continue;
+
+        Vector2 enemyPos = enemy.getPosition();
+        float dx = newPosition.x - enemyPos.x;
+        float dy = newPosition.y - enemyPos.y;
+        float distance = std::sqrt(dx * dx + dy * dy);
+
+        // Check if enemies would overlap (using radius-based collision)
+        if (distance < enemyRadius * 2) {
+            collisionDetected = true;
+
+            // Add separation force to push enemies apart
+            if (distance > 0) {
+                separationForce.x += (dx / distance) * 0.5f;
+                separationForce.y += (dy / distance) * 0.5f;
+            } else {
+                // If exactly on top of each other, add random separation
+                separationForce.x += (rand() % 2 == 0 ? 1 : -1) * 0.5f;
+                separationForce.y += (rand() % 2 == 0 ? 1 : -1) * 0.5f;
+            }
+        }
     }
+
+    // Check collision with player (stop at player, don't overlap)
+    float playerDx = newPosition.x - playerPosition.x;
+    float playerDy = newPosition.y - playerPosition.y;
+    float playerDistance = std::sqrt(playerDx * playerDx + playerDy * playerDy);
+
+    if (playerDistance < enemyRadius + playerRadius) {
+        // Stop movement towards player if too close
+        return;
+    }
+
+    // Apply separation force if collision detected
+    if (collisionDetected) {
+        // Normalize separation force
+        float sepLength = std::sqrt(separationForce.x * separationForce.x + separationForce.y * separationForce.y);
+        if (sepLength > 0) {
+            separationForce.x /= sepLength;
+            separationForce.y /= sepLength;
+        }
+
+        // Blend original velocity with separation force
+        velocity.x = velocity.x * 0.3f + separationForce.x * 0.7f;
+        velocity.y = velocity.y * 0.3f + separationForce.y * 0.7f;
+
+        // Renormalize
+        float newLength = std::sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
+        if (newLength > 0) {
+            velocity.x /= newLength;
+            velocity.y /= newLength;
+        }
+
+        // Reduce speed when avoiding collisions
+        newPosition.x = position.x + velocity.x * speed * DELTATIME * 0.5f;
+        newPosition.y = position.y + velocity.y * speed * DELTATIME * 0.5f;
+    }
+
+    // Check world boundaries
+    if (newPosition.x < -32 * CELL_SIZE || newPosition.x > 32 * CELL_SIZE ||
+        newPosition.y < -32 * CELL_SIZE || newPosition.y > 32 * CELL_SIZE) {
+        return;
+    }
+
+    // Apply movement
+    position = newPosition;
 
 }

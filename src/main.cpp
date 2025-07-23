@@ -39,7 +39,7 @@ int main()
         screen.draw(player, grid, enemies);
 
         for (auto& enemy : enemies) {
-            enemy.moveToPlayer(player.getPosition());
+            enemy.moveToPlayer(player.getPosition(), enemies);
         }
 
     }

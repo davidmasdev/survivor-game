@@ -81,7 +81,7 @@ void Screen::draw(Player player, Grid grid, std::vector<Enemy> enemies) {
         { 0, 0 }, 0.0f, WHITE);
 
     // Enemies
-    for (auto enemy : enemies) {
+    for (auto& enemy : enemies) {
         DrawTexturePro(enemy.getTexture(), { 72, 37, CELL_SIZE, CELL_SIZE},
         { enemy.getPosition().x, enemy.getPosition().y, CELL_SIZE, CELL_SIZE},
         { 0, 0 }, 0.0f, WHITE);
