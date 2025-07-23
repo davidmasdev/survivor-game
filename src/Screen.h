@@ -7,6 +7,7 @@
 
 #ifndef SCREEN_H
 #define SCREEN_H
+#include "Enemy.h"
 #include "Grid.h"
 #include "Player.h"
 
@@ -18,7 +19,7 @@ private:
     Camera2D camera;
 public:
     Screen(int width, int height, Player player);
-    void draw(Player player, Grid grid);
+    void draw(Player player, Grid grid, std::vector<Enemy> enemies);
 };
 
 

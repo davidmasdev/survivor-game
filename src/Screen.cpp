@@ -24,7 +24,8 @@ Screen::Screen(int width, int height, Player player) {
     this->camera.zoom = 2.0f;
 }
 
-void Screen::draw(Player player, Grid grid) {
+
+void Screen::draw(Player player, Grid grid, std::vector<Enemy> enemies) {
     BeginDrawing();
     ClearBackground(RAYWHITE);
 
@@ -78,6 +79,13 @@ void Screen::draw(Player player, Grid grid) {
     DrawTexturePro(player.getTexture(), { 72, 19, CELL_SIZE, CELL_SIZE},
         { player.getPosition().x, player.getPosition().y, CELL_SIZE, CELL_SIZE},
         { 0, 0 }, 0.0f, WHITE);
+
+    // Enemies
+    for (auto enemy : enemies) {
+        DrawTexturePro(enemy.getTexture(), { 72, 37, CELL_SIZE, CELL_SIZE},
+        { enemy.getPosition().x, enemy.getPosition().y, CELL_SIZE, CELL_SIZE},
+        { 0, 0 }, 0.0f, WHITE);
+    }
 
     EndMode2D();
 

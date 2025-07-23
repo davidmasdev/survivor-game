@@ -32,7 +32,9 @@ add_executable(${PROJECT_NAME}
         src/Grid.cpp
         src/Grid.h
         src/Cell.cpp
-        src/Cell.h)
+        src/Cell.h
+        src/Enemy.cpp
+        src/Enemy.h)
 target_sources(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_INCLUDE})
 target_link_libraries(${PROJECT_NAME} PRIVATE raylib)
