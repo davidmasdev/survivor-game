@@ -4,6 +4,7 @@
 #pragma once
 
 #ifndef PLAYER_H
+#include "Enemy.h"
 #include "raylib.h"
 
 class Player {
@@ -19,7 +20,7 @@ private:
 
 public:
     Player(float x, float y);
-    void handleKeys();
+    void handleKeys(std::vector<Enemy> enemies);
     Vector2 getPosition();
     Vector2 getVelocity();
     Texture2D getTexture();

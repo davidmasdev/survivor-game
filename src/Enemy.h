@@ -3,13 +3,10 @@
 //
 #pragma once
 
-
-
 #ifndef ENEMY_H
 #define ENEMY_H
 #include <vector>
 
-#include "Player.h"
 #include "raylib.h"
 
 

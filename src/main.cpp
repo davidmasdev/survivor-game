@@ -34,7 +34,7 @@ int main()
 
     while (!WindowShouldClose())
     {
-        player.handleKeys();
+        player.handleKeys(enemies);
 
         screen.draw(player, grid, enemies);
 

@@ -5,6 +5,9 @@
 #include "Player.h"
 
 #include <cmath>
+#include <vector>
+
+#include "Enemy.h"
 
 const int CELL_SIZE = 16;
 
@@ -19,7 +22,10 @@ Player::Player(float x, float y) {
     this->texture = initTexture;
 }
 
-void Player::handleKeys() {
+void Player::handleKeys(std::vector<Enemy> enemies) {
+    const float enemyRadius = 6.0f;
+    const float playerRadius = 6.0f;
+
     velocity = Vector2{0, 0};
 
     if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) velocity.x+=1;
@@ -32,6 +38,20 @@ void Player::handleKeys() {
         velocity.x /= length;
         velocity.y /= length;
     }
+
+
+    for (auto& enemy : enemies) {
+        int dx = position.x + velocity.x * speed * deltaTime - enemy.getPosition().x;
+        int dy = position.y + velocity.y * speed * deltaTime  - enemy.getPosition().y;
+
+        int distance = sqrt(dx * dx + dy * dy);
+        if (distance < enemyRadius + playerRadius) {
+            return;
+        }
+
+    }
+
+
     if (position.x + velocity.x * speed * deltaTime < 32 * CELL_SIZE && position.y + velocity.y * speed * deltaTime < 32 * CELL_SIZE &&
         position.x + velocity.x * speed * deltaTime > -32 * CELL_SIZE && position.y + velocity.y * speed * deltaTime > -32 * CELL_SIZE)
     move(velocity);
