@@ -34,12 +34,13 @@ int main()
 
     while (!WindowShouldClose())
     {
+        player.update();
         player.handleKeys(enemies);
 
         screen.draw(player, grid, enemies);
 
         for (auto& enemy : enemies) {
-            enemy.moveToPlayer(player.getPosition(), enemies);
+            enemy.moveToPlayer(player, enemies);
         }
 
     }

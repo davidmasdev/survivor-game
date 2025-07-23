@@ -3,10 +3,12 @@
 //
 
 #include "Enemy.h"
+#include "Player.h"
 
 #include <cmath>
 #include <ranges>
 #include <vector>
+
 
 const float DELTATIME = 0.016f;
 const int CELL_SIZE = 16;
@@ -16,7 +18,7 @@ Enemy::Enemy(Vector2 position) {
     const Texture2D initTexture = LoadTexture("../resources/textures/entities.png");
     this->texture = initTexture;
     this->speed = 120.0f;
-    this->health = 3;
+    this->health = 3.0f;
 }
 
 
@@ -29,10 +31,12 @@ Texture2D Enemy::getTexture() {
     return this->texture;
 }
 
-void Enemy::moveToPlayer(Vector2 playerPosition, std::vector<Enemy> enemies) {
+void Enemy::moveToPlayer(Player &player, std::vector<Enemy> enemies) {
     velocity = Vector2{0, 0};
     const float enemyRadius = 6.0f;
     const float playerRadius = 6.0f;
+
+    Vector2 playerPosition = player.getPosition();
 
     // Calculate direction to player
     Vector2 direction = {playerPosition.x - position.x, playerPosition.y - position.y};
@@ -88,6 +92,8 @@ void Enemy::moveToPlayer(Vector2 playerPosition, std::vector<Enemy> enemies) {
 
     if (playerDistance < enemyRadius + playerRadius) {
         // Stop movement towards player if too close
+        if (player.canBeHit())
+            player.hitPlayer();
         return;
     }
 

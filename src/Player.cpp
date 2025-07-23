@@ -6,17 +6,19 @@
 
 #include <cmath>
 #include <vector>
+#include <bits/atomic_base.h>
 
 #include "Enemy.h"
 
 const int CELL_SIZE = 16;
-
 
 Player::Player(float x, float y) {
     this->position = { x , y };
     this->velocity = { 0 , 0};
     this->speed = 200.0f;
     this->deltaTime = 0.016f;
+    this->health = 3.0f;
+    this->hit = false;
 
     const Texture2D initTexture = LoadTexture("../resources/textures/entities.png");
     this->texture = initTexture;
@@ -46,11 +48,11 @@ void Player::handleKeys(std::vector<Enemy> enemies) {
 
         int distance = sqrt(dx * dx + dy * dy);
         if (distance < enemyRadius + playerRadius) {
+
             return;
         }
 
     }
-
 
     if (position.x + velocity.x * speed * deltaTime < 32 * CELL_SIZE && position.y + velocity.y * speed * deltaTime < 32 * CELL_SIZE &&
         position.x + velocity.x * speed * deltaTime > -32 * CELL_SIZE && position.y + velocity.y * speed * deltaTime > -32 * CELL_SIZE)
@@ -76,4 +78,28 @@ Texture2D Player::getTexture() {
 
 float Player::getDeltaTime() {
     return this->deltaTime;
+}
+
+float Player::getHealth() {
+    return this->health;
+}
+
+bool Player::canBeHit() {
+    return this->hitCooldown <= 0;
+}
+
+void Player::hitPlayer() {
+    if (!canBeHit()) {
+        return;
+    }
+
+    this->hit = true;
+    this->hitCooldown = 0.4f;
+    this->health--;
+}
+
+void Player::update() {
+    if (hitCooldown > 0) {
+        hitCooldown -= deltaTime;
+    }
 }

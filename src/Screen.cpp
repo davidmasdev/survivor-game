@@ -76,9 +76,16 @@ void Screen::draw(Player player, Grid grid, std::vector<Enemy> enemies) {
 
     // Player
     // DrawCircle(playerPos.x, playerPos.y, PLAYER_RADIUS, RED);
-    DrawTexturePro(player.getTexture(), { 72, 19, CELL_SIZE, CELL_SIZE},
+    if (!player.canBeHit()) {
+        DrawTexturePro(player.getTexture(), { 72, 19, CELL_SIZE, CELL_SIZE},
+        { player.getPosition().x, player.getPosition().y, CELL_SIZE, CELL_SIZE},
+        { 0, 0 }, 0.0f, RED);
+    } else {
+        DrawTexturePro(player.getTexture(), { 72, 19, CELL_SIZE, CELL_SIZE},
         { player.getPosition().x, player.getPosition().y, CELL_SIZE, CELL_SIZE},
         { 0, 0 }, 0.0f, WHITE);
+    }
+
 
     // Enemies
     for (auto& enemy : enemies) {
@@ -103,6 +110,11 @@ void Screen::draw(Player player, Grid grid, std::vector<Enemy> enemies) {
 
     std::string zoomInfo = std::format("Zoom: {:.2f}", camera.zoom);
     DrawText(zoomInfo.c_str(), 10, 65, 16, DARKGRAY);
+
+
+    // Health
+    std::string healthInfo = std::format("H: {:.2f}", player.getHealth());
+    DrawText(healthInfo.c_str(), width-140, 40, 20, RED);
 
     EndDrawing();
 }

@@ -4,8 +4,11 @@
 #pragma once
 
 #ifndef PLAYER_H
-#include "Enemy.h"
+#include <vector>
+
 #include "raylib.h"
+
+class Enemy;
 
 class Player {
 
@@ -15,6 +18,9 @@ private:
     float speed;
     float deltaTime;
     Texture2D texture;
+    float health;
+    bool hit;
+    float hitCooldown;
 
     void move(Vector2 newVelocity);
 
@@ -25,6 +31,10 @@ public:
     Vector2 getVelocity();
     Texture2D getTexture();
     float getDeltaTime();
+    float getHealth();
+    bool canBeHit();
+    void hitPlayer();
+    void update();
 };
 
 #define PLAYER_H

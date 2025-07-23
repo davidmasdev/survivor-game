@@ -10,18 +10,20 @@
 #include "raylib.h"
 
 
+class Player;
+
 class Enemy {
 private:
     Vector2 position;
     Vector2 velocity;
     Texture2D texture;
-    int health;
+    float health;
     float speed;
 public:
     Enemy(Vector2 position);
     Vector2 getPosition();
     Texture2D getTexture();
-    void moveToPlayer(Vector2 playerPosition, std::vector<Enemy> enemies);
+    void moveToPlayer(Player &player, std::vector<Enemy> enemies);
 };
 
 
