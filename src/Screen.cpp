@@ -21,7 +21,7 @@ Screen::Screen(int width, int height, Player player) {
     this->camera.target = player.getPosition();
     this->camera.offset = (Vector2){ width/2.0f, height/2.0f };
     this->camera.rotation = 0.0f;
-    this->camera.zoom = 1.0f;
+    this->camera.zoom = 2.0f;
 }
 
 void Screen::draw(Player player, Grid grid) {
@@ -61,18 +61,23 @@ void Screen::draw(Player player, Grid grid) {
     float wheel = GetMouseWheelMove();
     if (wheel != 0) {
         camera.zoom += wheel * 0.1f;
-        camera.zoom = Clamp(camera.zoom, 0.8f, 3.0f);
+        camera.zoom = Clamp(camera.zoom, 1.3f, 4.0f);
     }
 
     BeginMode2D(camera);
 
     // Grid
     for (Cell cell : grid.getCells()) {
-        DrawTexturePro(cell.getTexture(), {96, 64 ,CELL_SIZE, CELL_SIZE}, {cell.getPosition().x, cell.getPosition().y ,CELL_SIZE, CELL_SIZE}, { 0, 0 }, 0.0f, WHITE);
+        DrawTexturePro(cell.getTexture(), {96, 64 ,CELL_SIZE, CELL_SIZE},
+                {cell.getPosition().x, cell.getPosition().y ,CELL_SIZE, CELL_SIZE},
+                { 0, 0 }, 0.0f, WHITE);
     }
 
     // Player
-    DrawCircle(playerPos.x, playerPos.y, PLAYER_RADIUS, RED);
+    // DrawCircle(playerPos.x, playerPos.y, PLAYER_RADIUS, RED);
+    DrawTexturePro(player.getTexture(), { 72, 19, CELL_SIZE, CELL_SIZE},
+        { player.getPosition().x, player.getPosition().y, CELL_SIZE, CELL_SIZE},
+        { 0, 0 }, 0.0f, WHITE);
 
     EndMode2D();
 

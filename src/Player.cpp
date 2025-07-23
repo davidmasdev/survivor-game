@@ -8,11 +8,15 @@
 
 const int CELL_SIZE = 16;
 
+
 Player::Player(float x, float y) {
     this->position = { x , y };
     this->velocity = { 0 , 0};
     this->speed = 200.0f;
     this->deltaTime = 0.016f;
+
+    const Texture2D initTexture = LoadTexture("../resources/textures/entities.png");
+    this->texture = initTexture;
 }
 
 void Player::handleKeys() {
@@ -44,6 +48,10 @@ Vector2 Player::getPosition() {
 
 Vector2 Player::getVelocity() {
     return this->velocity;
+}
+
+Texture2D Player::getTexture() {
+    return this->texture;
 }
 
 float Player::getDeltaTime() {

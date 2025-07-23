@@ -13,6 +13,8 @@ private:
     Vector2 velocity;
     float speed;
     float deltaTime;
+    Texture2D texture;
+
     void move(Vector2 newVelocity);
 
 public:
@@ -20,6 +22,7 @@ public:
     void handleKeys();
     Vector2 getPosition();
     Vector2 getVelocity();
+    Texture2D getTexture();
     float getDeltaTime();
 };
 
