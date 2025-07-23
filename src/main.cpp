@@ -23,7 +23,7 @@ int main()
 
     Grid grid = Grid();
 
-    int n = 100;
+    int n = 10;
 
     std::vector<Enemy> enemies;
     for (int i=0; i<n; i++) {
@@ -37,6 +37,10 @@ int main()
         player.handleKeys();
 
         screen.draw(player, grid, enemies);
+
+        for (auto& enemy : enemies) {
+            enemy.moveToPlayer(player.getPosition());
+        }
 
     }
 
