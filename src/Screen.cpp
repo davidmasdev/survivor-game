@@ -86,6 +86,14 @@ void Screen::draw(Player player, Grid grid, std::vector<Enemy> enemies) {
         { 0, 0 }, 0.0f, WHITE);
     }
 
+    // Arrows
+    for (auto& arrow : player.getArrows()) {
+        DrawTexturePro(arrow.getTexture(), { 32, 0, CELL_SIZE, CELL_SIZE},
+        { arrow.getPosition().x, arrow.getPosition().y, CELL_SIZE, CELL_SIZE},
+        { 0, 0 }, 0.0f, WHITE);
+    }
+
+
 
     // Enemies
     for (auto& enemy : enemies) {

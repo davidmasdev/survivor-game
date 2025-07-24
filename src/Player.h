@@ -6,6 +6,7 @@
 #ifndef PLAYER_H
 #include <vector>
 
+#include "Arrow.h"
 #include "raylib.h"
 
 class Enemy;
@@ -18,9 +19,14 @@ private:
     float speed;
     float deltaTime;
     Texture2D texture;
+    Texture2D arrowTexture;
     float health;
     bool hit;
     float hitCooldown;
+    int direction;
+    float arrowCooldown;
+
+    std::vector<Arrow> arrows;
 
     void move(Vector2 newVelocity);
 
@@ -35,6 +41,8 @@ public:
     bool canBeHit();
     void hitPlayer();
     void update();
+    void shoot();
+    std::vector<Arrow> getArrows();
 };
 
 #define PLAYER_H
