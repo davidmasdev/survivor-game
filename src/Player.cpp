@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
+#include <iostream>
 #include <vector>
 
 #include "Arrow.h"
@@ -107,7 +108,7 @@ void Player::hitPlayer() {
     this->health--;
 }
 
-void Player::update() {
+void Player::update(std::vector<Enemy> &enemies) {
     if (hitCooldown > 0) {
         hitCooldown -= deltaTime;
     }
@@ -138,8 +139,50 @@ void Player::update() {
                 currentPos.x + velocity.x * arrow.getSpeed() * deltaTime,
                 currentPos.y + velocity.y * arrow.getSpeed() * deltaTime
             };
-            arrow.setPositon(newPosition);
-            arrow.decreaseTimeToLive(deltaTime);
+
+            Vector2 arrowPosition = newPosition;
+            switch (arrow.getDirection()) {
+                case 0:
+                    arrowPosition.x-=16;
+                    break;
+                case 180:
+                    arrowPosition.x+=8;
+                    arrowPosition.y-=16;
+                    break;
+                case 90:
+                    arrowPosition.y-=16;
+                    arrowPosition.x-=16;
+                    break;
+                case 270:
+                    arrowPosition.y+=8;
+                    break;
+            }
+
+            const float enemyRadius = 6.0f;
+            bool hitEnemy = false;
+            for (auto& enemy : enemies) {
+                hitEnemy = false;
+                Vector2 enemyPosition = enemy.getPosition();
+
+                // Check collision with enemy
+                float enemyDx = arrowPosition.x - enemyPosition.x;
+                float enemyDy = arrowPosition.y - enemyPosition.y;
+                float enemyDistance = std::sqrt(enemyDx * enemyDx + enemyDy * enemyDy);
+
+                if (enemyDistance < enemyRadius + arrow.getRadius()) {
+                    enemy.hitEnemy();
+                    hitEnemy = true;
+                    break;
+                }
+            }
+            // Only update position and time if arrow didn't hit an enemy
+            if (!hitEnemy) {
+                arrow.setPositon(newPosition);
+                arrow.decreaseTimeToLive(deltaTime);
+            } else {
+                // Mark arrow for deletion by setting time to live to 0
+                arrow.setTimeToLive(0);
+            }
         }
     }
 

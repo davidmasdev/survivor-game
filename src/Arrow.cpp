@@ -50,3 +50,8 @@ void Arrow::setPositon (Vector2 position) {
 void Arrow::decreaseTimeToLive(float deltaTime) {
     timeToLive -= deltaTime;
 }
+
+void Arrow::setTimeToLive(int newTimeToLive) {
+    this->timeToLive = newTimeToLive;
+}
+

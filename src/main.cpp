@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cmath>
 #include <string>
 #include "raylib.h"
@@ -34,14 +35,23 @@ int main()
 
     while (!WindowShouldClose())
     {
-        player.update();
+        player.update(enemies);
         player.handleKeys(enemies);
 
         screen.draw(player, grid, enemies);
 
         for (auto& enemy : enemies) {
             enemy.moveToPlayer(player, enemies);
+            enemy.update();
         }
+
+        enemies.erase(
+        std::remove_if(enemies.begin(), enemies.end(),
+            [](Enemy& enemy) {
+                return enemy.getHealth() <= 0;
+            }),
+        enemies.end()
+    );
 
     }
 

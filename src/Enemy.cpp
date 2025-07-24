@@ -18,7 +18,7 @@ Enemy::Enemy(Vector2 position) {
     const Texture2D initTexture = LoadTexture("../resources/textures/entities.png");
     this->texture = initTexture;
     this->speed = 120.0f;
-    this->health = 3.0f;
+    this->health = 2.0f;
 }
 
 
@@ -131,4 +131,23 @@ void Enemy::moveToPlayer(Player &player, std::vector<Enemy> enemies) {
     // Apply movement
     position = newPosition;
 
+}
+
+void Enemy::hitEnemy() {
+    this->hitCooldown = 0.4f;
+    this->health--;
+}
+
+float Enemy::getHitCooldown() {
+    return this->hitCooldown;
+}
+
+void Enemy::update() {
+    if (hitCooldown>0) {
+        hitCooldown -= 0.016f;
+    }
+}
+
+float Enemy::getHealth() {
+    return this->health;
 }

@@ -19,11 +19,16 @@ private:
     Texture2D texture;
     float health;
     float speed;
+    float hitCooldown;
 public:
     Enemy(Vector2 position);
     Vector2 getPosition();
     Texture2D getTexture();
     void moveToPlayer(Player &player, std::vector<Enemy> enemies);
+    void hitEnemy();
+    float getHitCooldown();
+    float getHealth();
+    void update();
 };
 
 

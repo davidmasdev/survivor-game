@@ -97,12 +97,18 @@ void Screen::draw(Player player, Grid grid, std::vector<Enemy> enemies) {
     }
 
 
-
     // Enemies
     for (auto& enemy : enemies) {
-        DrawTexturePro(enemy.getTexture(), { 72, 37, CELL_SIZE, CELL_SIZE},
+        if (enemy.getHitCooldown() > 0) {
+            DrawTexturePro(enemy.getTexture(), { 72, 37, CELL_SIZE, CELL_SIZE},
+        { enemy.getPosition().x, enemy.getPosition().y, CELL_SIZE, CELL_SIZE},
+        { 0, 0 }, 0.0f, RED);
+        } else {
+            DrawTexturePro(enemy.getTexture(), { 72, 37, CELL_SIZE, CELL_SIZE},
         { enemy.getPosition().x, enemy.getPosition().y, CELL_SIZE, CELL_SIZE},
         { 0, 0 }, 0.0f, WHITE);
+        }
+
     }
 
     EndMode2D();

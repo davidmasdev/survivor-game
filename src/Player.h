@@ -41,7 +41,7 @@ public:
     int getDirection();
     bool canBeHit();
     void hitPlayer();
-    void update();
+    void update(std::vector<Enemy> &enemies);
     void shoot();
     std::vector<Arrow> getArrows();
 };

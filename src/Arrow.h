@@ -27,6 +27,7 @@ public:
     float getSpeed();
     int getDirection();
     int getTimeToLive();
+    void setTimeToLive(int newTimeToLive);
     void setPositon (Vector2 position);
     void decreaseTimeToLive(float deltaTime);
     // bool hit;
