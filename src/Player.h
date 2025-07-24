@@ -38,6 +38,7 @@ public:
     Texture2D getTexture();
     float getDeltaTime();
     float getHealth();
+    int getDirection();
     bool canBeHit();
     void hitPlayer();
     void update();

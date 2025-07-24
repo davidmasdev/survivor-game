@@ -74,14 +74,17 @@ void Screen::draw(Player player, Grid grid, std::vector<Enemy> enemies) {
                 { 0, 0 }, 0.0f, WHITE);
     }
 
+    float sourceWidth = CELL_SIZE;
+    if (player.getDirection()==180) {
+        sourceWidth = -CELL_SIZE;
+    }
     // Player
-    // DrawCircle(playerPos.x, playerPos.y, PLAYER_RADIUS, RED);
     if (!player.canBeHit()) {
-        DrawTexturePro(player.getTexture(), { 72, 19, CELL_SIZE, CELL_SIZE},
+        DrawTexturePro(player.getTexture(), { 72, 19, sourceWidth, CELL_SIZE},
         { player.getPosition().x, player.getPosition().y, CELL_SIZE, CELL_SIZE},
         { 0, 0 }, 0.0f, RED);
     } else {
-        DrawTexturePro(player.getTexture(), { 72, 19, CELL_SIZE, CELL_SIZE},
+        DrawTexturePro(player.getTexture(), { 72, 19, sourceWidth, CELL_SIZE},
         { player.getPosition().x, player.getPosition().y, CELL_SIZE, CELL_SIZE},
         { 0, 0 }, 0.0f, WHITE);
     }

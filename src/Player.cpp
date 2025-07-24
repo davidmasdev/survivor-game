@@ -177,3 +177,7 @@ void Player::shoot() {
 std::vector<Arrow> Player::getArrows() {
     return this->arrows;
 }
+
+int Player::getDirection() {
+    return this->direction;
+}
