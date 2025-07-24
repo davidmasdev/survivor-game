@@ -17,7 +17,7 @@ const int CELL_SIZE = 16;
 Player::Player(float x, float y) {
     this->position = { x , y };
     this->velocity = { 0 , 0};
-    this->speed = 200.0f;
+    this->speed = 100.0f;
     this->deltaTime = 0.016f;
     this->health = 3.0f;
     this->hit = false;
@@ -40,9 +40,9 @@ void Player::handleKeys(std::vector<Enemy> enemies) {
     if (IsKeyDown(KEY_SPACE) && arrowCooldown <= 0) shoot();
 
     if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) { velocity.x+=1; direction =0; }
-    if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)) { velocity.x-=1; direction = 1; }
-    if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S)) { velocity.y+=1; direction = 2; }
-    if (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)) { velocity.y-=1; direction = 3; }
+    if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)) { velocity.x-=1; direction = 180; }
+    if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S)) { velocity.y+=1; direction = 90; }
+    if (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)) { velocity.y-=1; direction = 270; }
 
     float length = std::sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
     if (length > 0) {
@@ -123,20 +123,20 @@ void Player::update() {
                 case 0:
                     velocity.x++;
                     break;
-                case 1:
+                case 180:
                     velocity.x--;
                     break;
-                case 2:
+                case 90:
                     velocity.y++;
                     break;
-                case 3:
+                case 270:
                     velocity.y--;
                     break;
             }
             Vector2 currentPos = arrow.getPosition();
             Vector2 newPosition = {
-                currentPos.x + velocity.x * speed * deltaTime,
-                currentPos.y + velocity.y * speed * deltaTime
+                currentPos.x + velocity.x * arrow.getSpeed() * deltaTime,
+                currentPos.y + velocity.y * arrow.getSpeed() * deltaTime
             };
             arrow.setPositon(newPosition);
             arrow.decreaseTimeToLive(deltaTime);
@@ -153,7 +153,24 @@ void Player::update() {
 }
 
 void Player::shoot() {
-    arrows.push_back(Arrow(this->position, arrowTexture, this->direction, 5*16));
+    Vector2 arrowPosition = position;
+    switch (direction) {
+        case 0:
+            arrowPosition.x+=16;
+            break;
+        case 180:
+            arrowPosition.x-=8;
+            arrowPosition.y+=16;
+            break;
+        case 90:
+            arrowPosition.y+=16;
+            arrowPosition.x+=16;
+            break;
+        case 270:
+            arrowPosition.y-=8;
+            break;
+    }
+    arrows.push_back(Arrow(arrowPosition, arrowTexture, this->direction, 5*16));
     arrowCooldown = 0.5f;
 }
 

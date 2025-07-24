@@ -13,6 +13,7 @@ class Arrow {
 private:
     Vector2 position;
     Texture2D texture;
+    float speed;
     float radius;
     bool hit;
     int direction;
@@ -23,6 +24,7 @@ public:
     Vector2 getPosition();
     Texture2D getTexture();
     float getRadius();
+    float getSpeed();
     int getDirection();
     int getTimeToLive();
     void setPositon (Vector2 position);

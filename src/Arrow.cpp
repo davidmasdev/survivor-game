@@ -11,6 +11,7 @@ Arrow::Arrow(Vector2 position, Texture2D texture, int direction, int timeToLive)
     this->texture = texture;
     this->direction = direction;
     this->timeToLive = timeToLive;
+    this->speed = 200.0f;
 }
 
 Arrow::~Arrow() {
@@ -28,6 +29,10 @@ Texture2D Arrow::getTexture() {
 
 float Arrow::getRadius() {
     return this->radius;
+}
+
+float Arrow::getSpeed() {
+    return this->speed;
 }
 
 int Arrow::getDirection() {
