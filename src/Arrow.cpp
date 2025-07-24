@@ -11,6 +11,7 @@ Arrow::Arrow(Vector2 position, Texture2D texture, int direction, int timeToLive)
     this->texture = texture;
     this->direction = direction;
     this->timeToLive = timeToLive;
+    this->radius = 3.0f;
     this->speed = 200.0f;
 }
 

@@ -25,7 +25,7 @@ Screen::Screen(int width, int height, Player player) {
 }
 
 
-void Screen::draw(Player player, Grid grid, std::vector<Enemy> enemies) {
+void Screen::draw(Player& player, Grid grid, std::vector<Enemy>& enemies) {
     BeginDrawing();
     ClearBackground(RAYWHITE);
 

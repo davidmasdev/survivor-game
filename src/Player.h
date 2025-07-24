@@ -32,7 +32,7 @@ private:
 
 public:
     Player(float x, float y);
-    void handleKeys(std::vector<Enemy> enemies);
+    void handleKeys(std::vector<Enemy> &enemies);
     Vector2 getPosition();
     Vector2 getVelocity();
     Texture2D getTexture();
@@ -43,7 +43,7 @@ public:
     void hitPlayer();
     void update(std::vector<Enemy> &enemies);
     void shoot();
-    std::vector<Arrow> getArrows();
+    std::vector<Arrow>& getArrows();
 };
 
 #define PLAYER_H

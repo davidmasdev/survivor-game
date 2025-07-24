@@ -32,27 +32,29 @@ int main()
         enemies.push_back(Enemy(pos));
     }
 
-
     while (!WindowShouldClose())
     {
-        player.update(enemies);
-        player.handleKeys(enemies);
-
-        screen.draw(player, grid, enemies);
-
+        // Update enemy positions and behavior first
         for (auto& enemy : enemies) {
             enemy.moveToPlayer(player, enemies);
             enemy.update();
         }
 
+        // Remove dead enemies BEFORE processing arrow collisions
         enemies.erase(
-        std::remove_if(enemies.begin(), enemies.end(),
-            [](Enemy& enemy) {
-                return enemy.getHealth() <= 0;
-            }),
-        enemies.end()
-    );
+            std::remove_if(enemies.begin(), enemies.end(),
+                [](Enemy& enemy) {
+                    return enemy.getHealth() <= 0;
+                }),
+            enemies.end()
+        );
 
+        // Now update player (including arrow collision detection) with clean enemy list
+        player.update(enemies);
+        player.handleKeys(enemies);
+
+        // Draw everything
+        screen.draw(player, grid, enemies);
     }
 
     CloseWindow();

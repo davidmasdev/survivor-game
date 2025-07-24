@@ -32,7 +32,7 @@ Player::Player(float x, float y) {
     this->arrowTexture = initArrowTexture;
 }
 
-void Player::handleKeys(std::vector<Enemy> enemies) {
+void Player::handleKeys(std::vector<Enemy> &enemies) {
     const float enemyRadius = 6.0f;
     const float playerRadius = 6.0f;
 
@@ -117,8 +117,17 @@ void Player::update(std::vector<Enemy> &enemies) {
         arrowCooldown -= deltaTime;
     }
 
+    // Remove arrows that have expired or hit enemies
+    arrows.erase(
+        std::remove_if(arrows.begin(), arrows.end(),
+            [](Arrow& arrow) {
+                return arrow.getTimeToLive() <= 0;
+            }),
+        arrows.end()
+    );
+
     for (auto& arrow : arrows) {
-        if (arrow.getTimeToLive()>0) {
+        if (arrow.getTimeToLive() > 0) {
             Vector2 velocity = {0, 0};
             switch (arrow.getDirection()) {
                 case 0:
@@ -143,38 +152,43 @@ void Player::update(std::vector<Enemy> &enemies) {
             Vector2 arrowPosition = newPosition;
             switch (arrow.getDirection()) {
                 case 0:
-                    arrowPosition.x-=16;
+                    arrowPosition.x -= 16;
                     break;
                 case 180:
-                    arrowPosition.x+=8;
-                    arrowPosition.y-=16;
+                    arrowPosition.x += 8;
+                    arrowPosition.y -= 16;
                     break;
                 case 90:
-                    arrowPosition.y-=16;
-                    arrowPosition.x-=16;
+                    arrowPosition.y -= 16;
+                    arrowPosition.x -= 16;
                     break;
                 case 270:
-                    arrowPosition.y+=8;
+                    arrowPosition.y += 8;
                     break;
             }
 
             const float enemyRadius = 6.0f;
-            bool hitEnemy = false;
-            for (auto& enemy : enemies) {
-                hitEnemy = false;
-                Vector2 enemyPosition = enemy.getPosition();
+            bool hitEnemy = false; // Moved outside the enemy loop
 
-                // Check collision with enemy
-                float enemyDx = arrowPosition.x - enemyPosition.x;
-                float enemyDy = arrowPosition.y - enemyPosition.y;
-                float enemyDistance = std::sqrt(enemyDx * enemyDx + enemyDy * enemyDy);
+            // Add bounds checking for safety
+            if (!enemies.empty()) {
+                for (auto& enemy : enemies) {
+                    Vector2 enemyPosition = enemy.getPosition();
 
-                if (enemyDistance < enemyRadius + arrow.getRadius()) {
-                    enemy.hitEnemy();
-                    hitEnemy = true;
-                    break;
+                    // Check collision with enemy
+                    float enemyDx = arrowPosition.x - enemyPosition.x;
+                    float enemyDy = arrowPosition.y - enemyPosition.y;
+                    float enemyDistance = std::sqrt(enemyDx * enemyDx + enemyDy * enemyDy);
+
+                    if (enemyDistance < enemyRadius + arrow.getRadius()) {
+                        std::cout << "HIT\n";
+                        enemy.hitEnemy();
+                        hitEnemy = true;
+                        break; // Exit the enemy loop immediately after hitting one
+                    }
                 }
             }
+
             // Only update position and time if arrow didn't hit an enemy
             if (!hitEnemy) {
                 arrow.setPositon(newPosition);
@@ -185,14 +199,6 @@ void Player::update(std::vector<Enemy> &enemies) {
             }
         }
     }
-
-    arrows.erase(
-        std::remove_if(arrows.begin(), arrows.end(),
-            [](Arrow& arrow) {
-                return arrow.getTimeToLive() <= 0;
-            }),
-        arrows.end()
-    );
 }
 
 void Player::shoot() {
@@ -217,7 +223,7 @@ void Player::shoot() {
     arrowCooldown = 0.5f;
 }
 
-std::vector<Arrow> Player::getArrows() {
+std::vector<Arrow> &Player::getArrows() {
     return this->arrows;
 }
 
