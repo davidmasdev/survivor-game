@@ -118,6 +118,9 @@ void Screen::draw(Player& player, Grid grid, std::vector<Enemy>& enemies) {
     std::string initialMessage = "Welcome to the Survivor Game";
     DrawText(initialMessage.c_str(), (this->width/2)-MeasureText(initialMessage.c_str(), 20)/2, 10, UI_FONT_SIZE, LIGHTGRAY);
 
+    std::string enemiesMessage = std::format("Remaining enemies: {}",  enemies.size());
+    DrawText(enemiesMessage.c_str(), (this->width/2)-MeasureText(enemiesMessage.c_str(), 20)/2, 50, UI_FONT_SIZE, RED);
+
     // Vector2 sreenPos = GetWorldToScreen2D(player.getPosition(), camera);
     std::string coordinates = std::format("x: {:.1f} y: {:.1f}",
                                  playerPos.x,

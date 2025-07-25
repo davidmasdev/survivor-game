@@ -36,6 +36,7 @@ int main()
 
     rlImGuiSetup(true);
     bool waveCleared = false;
+    bool nextWave = false;
 
 
     while (!WindowShouldClose())
@@ -70,7 +71,6 @@ int main()
         // Draw everything
         screen.draw(player, grid, enemies);
 
-
         // Always call rlImGuiBegin() and rlImGuiEnd() together
         rlImGuiBegin();
 
@@ -78,15 +78,18 @@ int main()
             ImGui::Begin("Wave Cleared");
 
             ImGui::Text("You cleared the wave!");
-            if (ImGui::Button("Next Wave")) {
-                // Start next wave
-                int n = 2; // spawn new wave of enemies
-                for (int i = 0; i < n; i++) {
-                    Vector2 pos = { (float)GetRandomValue(-31*16, 31*16), (float)GetRandomValue(-31*16, 31*16)};
-                    enemies.push_back(Enemy(pos));
-                }
-
-                waveCleared = false;
+            ImGui::Text("Choose an upgrade");
+            if (ImGui::Button("Speed")) {
+                player.upgradeSpeed(20.0f);
+                nextWave = true;
+            }
+            if (ImGui::Button("Health")) {
+                player.upgradeHealth(1.0f);
+                nextWave = true;
+            }
+            if (ImGui::Button("Arrow Cooldown")) {
+                player.upgradeCooldown(0.2f);
+                nextWave = true;
             }
 
             ImGui::End();
@@ -94,10 +97,20 @@ int main()
 
         rlImGuiEnd();  // Always call this every frame
 
+        if (nextWave) {
+            // Start next wave
+            n += (n/2) + 1; // spawn new wave of enemies
+            for (int i = 0; i < n; i++) {
+                Vector2 pos = { (float)GetRandomValue(-31*16, 31*16), (float)GetRandomValue(-31*16, 31*16)};
+                enemies.push_back(Enemy(pos));
+            }
+
+            waveCleared = false;
+            nextWave = false;
+        }
+
         EndDrawing();
     }
-
-
 
     rlImGuiShutdown();
     CloseWindow();

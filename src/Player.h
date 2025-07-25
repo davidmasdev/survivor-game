@@ -25,6 +25,7 @@ private:
     float hitCooldown;
     int direction;
     float arrowCooldown;
+    float arrowCooldownValue;
 
     std::vector<Arrow> arrows;
 
@@ -39,6 +40,9 @@ public:
     float getDeltaTime();
     float getHealth();
     int getDirection();
+    void upgradeHealth(float increase);
+    void upgradeSpeed(float increase);
+    void upgradeCooldown(float increase);
     bool canBeHit();
     void hitPlayer();
     void update(std::vector<Enemy> &enemies);

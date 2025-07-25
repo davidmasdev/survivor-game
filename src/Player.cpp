@@ -23,6 +23,7 @@ Player::Player(float x, float y) {
     this->health = 3.0f;
     this->hit = false;
     this->arrowCooldown = 0.0f;
+    this->arrowCooldownValue = 0.8f;
 
 
     const Texture2D initTexture = LoadTexture("../resources/textures/entities.png");
@@ -219,7 +220,7 @@ void Player::shoot() {
             break;
     }
     arrows.push_back(Arrow(arrowPosition, arrowTexture, this->direction, 5*16));
-    arrowCooldown = 0.5f;
+    arrowCooldown = arrowCooldownValue;
 }
 
 std::vector<Arrow> &Player::getArrows() {
@@ -228,4 +229,16 @@ std::vector<Arrow> &Player::getArrows() {
 
 int Player::getDirection() {
     return this->direction;
+}
+
+void Player::upgradeHealth(float increase) {
+    health += increase;
+}
+
+void Player::upgradeSpeed(float increase) {
+    speed += increase;
+}
+
+void Player::upgradeCooldown(float increase) {
+    arrowCooldown -= increase;
 }
