@@ -25,7 +25,7 @@ Screen::Screen(int width, int height, Player player) {
 }
 
 
-void Screen::draw(Player& player, Grid grid, std::vector<Enemy>& enemies) {
+void Screen::draw(Player& player, Grid grid, std::vector<Enemy>& enemies, int waveNum) {
 
 
     // Camera target player smoothly with bounds
@@ -115,7 +115,7 @@ void Screen::draw(Player& player, Grid grid, std::vector<Enemy>& enemies) {
     // UI
     DrawFPS(10, 10);
 
-    std::string initialMessage = "Welcome to the Survivor Game";
+    std::string initialMessage = std::format("Wave: {}",  waveNum);
     DrawText(initialMessage.c_str(), (this->width/2)-MeasureText(initialMessage.c_str(), 20)/2, 10, UI_FONT_SIZE, LIGHTGRAY);
 
     std::string enemiesMessage = std::format("Remaining enemies: {}",  enemies.size());
@@ -132,7 +132,7 @@ void Screen::draw(Player& player, Grid grid, std::vector<Enemy>& enemies) {
 
 
     // Health
-    std::string healthInfo = std::format("H: {:.2f}", player.getHealth());
-    DrawText(healthInfo.c_str(), width-140, 40, 20, RED);
+    std::string healthInfo = std::format("Health: {}", player.getHealth());
+    DrawText(healthInfo.c_str(), width-120, 40, 20, YELLOW);
 }
 

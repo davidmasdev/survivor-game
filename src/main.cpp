@@ -27,6 +27,7 @@ int main()
     Grid grid = Grid();
 
     int n = 2;
+    int waveNum = 1;
 
     std::vector<Enemy> enemies;
     for (int i=0; i<n; i++) {
@@ -73,7 +74,7 @@ int main()
         ClearBackground(RAYWHITE);
 
         // Draw everything
-        screen.draw(player, grid, enemies);
+        screen.draw(player, grid, enemies, waveNum);
 
         // Enhanced UI with improved styling and effects
         rlImGuiBegin();
@@ -134,6 +135,7 @@ int main()
                 gameOver = false;
                 player = Player({0,0});
 
+                waveNum = 1;
                 n = 2;
                 enemies.clear();
 
@@ -189,11 +191,11 @@ int main()
                 ImGuiWindowFlags_NoCollapse);
 
             // Celebration text with animation
-            ImGui::SetCursorPosX((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Congratulations, warrior!").x) * 0.5f);
+            ImGui::SetCursorPosX((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Congratulations!").x) * 0.5f);
             float time = (float)GetTime();
             float glow = (sin(time * 2.0f) + 1.0f) * 0.5f;
             ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.8f + glow * 0.2f, 0.2f, 1.0f));
-            ImGui::Text("Congratulations, warrior!");
+            ImGui::Text("Congratulations!");
             ImGui::PopStyleColor();
 
             ImGui::SetCursorPosX((ImGui::GetWindowSize().x - ImGui::CalcTextSize("You have conquered this wave!").x) * 0.5f);
@@ -277,6 +279,7 @@ int main()
 
         if (nextWave) {
             // Start next wave
+            waveNum++;
             n += (n/2) + 1; // spawn new wave of enemies
             for (int i = 0; i < n; i++) {
                 Vector2 pos = { (float)GetRandomValue(-31*16, 31*16), (float)GetRandomValue(-31*16, 31*16)};

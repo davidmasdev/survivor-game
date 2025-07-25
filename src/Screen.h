@@ -19,7 +19,7 @@ private:
     Camera2D camera;
 public:
     Screen(int width, int height, Player player);
-    void draw(Player &player, Grid grid, std::vector<Enemy> &enemies);
+    void draw(Player &player, Grid grid, std::vector<Enemy> &enemies, int waveNum);
 };
 
 
