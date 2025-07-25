@@ -1,11 +1,12 @@
 #include <algorithm>
-#include <cmath>
+#include <iostream>
 #include <string>
 #include "raylib.h"
-#include <iostream>
+#include "rlImGui.h"
 
 #include "Enemy.h"
 #include "Grid.h"
+#include "imgui.h"
 #include "Player.h"
 #include "Screen.h"
 
@@ -24,39 +25,81 @@ int main()
 
     Grid grid = Grid();
 
-    int n = 10;
+    int n = 2;
 
     std::vector<Enemy> enemies;
     for (int i=0; i<n; i++) {
+        // TODO: Dont allow enemy to appear next to a player
         Vector2 pos = { (float)GetRandomValue(-31*16, 31*16), (float)GetRandomValue(-31*16, 31*16)};
         enemies.push_back(Enemy(pos));
     }
 
+    rlImGuiSetup(true);
+    bool waveCleared = false;
+
+
     while (!WindowShouldClose())
     {
-        // Update enemy positions and behavior first
-        for (auto& enemy : enemies) {
-            enemy.moveToPlayer(player, enemies);
-            enemy.update();
+        if (enemies.empty()) waveCleared = true;
+
+        if (!waveCleared) {
+            // Update enemy positions and behavior first
+            for (auto& enemy : enemies) {
+                enemy.moveToPlayer(player, enemies);
+                enemy.update();
+            }
+
+            // Remove dead enemies BEFORE processing arrow collisions
+            enemies.erase(
+                std::remove_if(enemies.begin(), enemies.end(),
+                    [](Enemy& enemy) {
+                        return enemy.getHealth() <= 0;
+                    }),
+                enemies.end()
+            );
+
+            // Now update player (including arrow collision detection) with clean enemy list
+            player.update(enemies);
+            player.handleKeys(enemies);
+
         }
 
-        // Remove dead enemies BEFORE processing arrow collisions
-        enemies.erase(
-            std::remove_if(enemies.begin(), enemies.end(),
-                [](Enemy& enemy) {
-                    return enemy.getHealth() <= 0;
-                }),
-            enemies.end()
-        );
-
-        // Now update player (including arrow collision detection) with clean enemy list
-        player.update(enemies);
-        player.handleKeys(enemies);
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
 
         // Draw everything
         screen.draw(player, grid, enemies);
+
+
+        // Always call rlImGuiBegin() and rlImGuiEnd() together
+        rlImGuiBegin();
+
+        if (waveCleared) {
+            ImGui::Begin("Wave Cleared");
+
+            ImGui::Text("You cleared the wave!");
+            if (ImGui::Button("Next Wave")) {
+                // Start next wave
+                int n = 2; // spawn new wave of enemies
+                for (int i = 0; i < n; i++) {
+                    Vector2 pos = { (float)GetRandomValue(-31*16, 31*16), (float)GetRandomValue(-31*16, 31*16)};
+                    enemies.push_back(Enemy(pos));
+                }
+
+                waveCleared = false;
+            }
+
+            ImGui::End();
+        }
+
+        rlImGuiEnd();  // Always call this every frame
+
+        EndDrawing();
     }
 
+
+
+    rlImGuiShutdown();
     CloseWindow();
 
     return 0;

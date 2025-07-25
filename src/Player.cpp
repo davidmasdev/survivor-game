@@ -181,7 +181,6 @@ void Player::update(std::vector<Enemy> &enemies) {
                     float enemyDistance = std::sqrt(enemyDx * enemyDx + enemyDy * enemyDy);
 
                     if (enemyDistance < enemyRadius + arrow.getRadius()) {
-                        std::cout << "HIT\n";
                         enemy.hitEnemy();
                         hitEnemy = true;
                         break; // Exit the enemy loop immediately after hitting one

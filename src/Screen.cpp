@@ -26,8 +26,7 @@ Screen::Screen(int width, int height, Player player) {
 
 
 void Screen::draw(Player& player, Grid grid, std::vector<Enemy>& enemies) {
-    BeginDrawing();
-    ClearBackground(RAYWHITE);
+
 
     // Camera target player smoothly with bounds
     Vector2 playerPos = player.getPosition();
@@ -132,7 +131,5 @@ void Screen::draw(Player& player, Grid grid, std::vector<Enemy>& enemies) {
     // Health
     std::string healthInfo = std::format("H: {:.2f}", player.getHealth());
     DrawText(healthInfo.c_str(), width-140, 40, 20, RED);
-
-    EndDrawing();
 }
 
