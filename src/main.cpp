@@ -37,13 +37,16 @@ int main()
     rlImGuiSetup(true);
     bool waveCleared = false;
     bool nextWave = false;
+    bool gameOver = false;
 
 
     while (!WindowShouldClose())
     {
-        if (enemies.empty()) waveCleared = true;
 
-        if (!waveCleared) {
+        if (enemies.empty()) waveCleared = true;
+        if (player.getHealth()<=0) gameOver = true;
+
+        if (!waveCleared && !gameOver) {
             // Update enemy positions and behavior first
             for (auto& enemy : enemies) {
                 enemy.moveToPlayer(player, enemies);
@@ -73,6 +76,36 @@ int main()
 
         // Always call rlImGuiBegin() and rlImGuiEnd() together
         rlImGuiBegin();
+
+        if (gameOver) {
+
+            ImGui::Begin("GAME OVER");
+
+            ImGui::Text("You Lost!");
+            if (ImGui::Button("Replay")) {
+                gameOver = false;
+                player = Player({0,0});
+
+                n = 2;
+                enemies.clear();
+
+                for (int i=0; i<n; i++) {
+                    // TODO: Dont allow enemy to appear next to a player
+                    Vector2 pos = { (float)GetRandomValue(-31*16, 31*16), (float)GetRandomValue(-31*16, 31*16)};
+                    enemies.push_back(Enemy(pos));
+                }
+            }
+            if (ImGui::Button("Quit")) {
+                ImGui::End();
+                rlImGuiEnd();
+                EndDrawing();
+                rlImGuiShutdown();
+                CloseWindow();
+                return 0;
+            }
+
+            ImGui::End();
+        }
 
         if (waveCleared) {
             ImGui::Begin("Wave Cleared");
