@@ -8,7 +8,7 @@
 const int CELL_SIZE = 16;
 
 Grid::Grid() {
-    Texture2D mapTexture = LoadTexture("../resources/textures/tilemap.png");
+    Texture2D mapTexture = LoadTexture(ASSETS_PATH "textures/tilemap.png");
 
     for (float i=-32; i<32; i++) {
         for (float j=-32; j<32; j++) {

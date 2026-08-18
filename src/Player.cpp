@@ -26,10 +26,10 @@ Player::Player(float x, float y) {
     this->arrowCooldownValue = 0.8f;
 
 
-    const Texture2D initTexture = LoadTexture("../resources/textures/entities.png");
+    const Texture2D initTexture = LoadTexture(ASSETS_PATH "textures/entities.png");
     this->texture = initTexture;
 
-    const Texture2D initArrowTexture = LoadTexture("../resources/textures/arrows.png");
+    const Texture2D initArrowTexture = LoadTexture(ASSETS_PATH "textures/arrows.png");
     this->arrowTexture = initArrowTexture;
 }
 

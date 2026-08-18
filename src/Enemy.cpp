@@ -15,7 +15,7 @@ const int CELL_SIZE = 16;
 
 Enemy::Enemy(Vector2 position) {
     this->position = position;
-    const Texture2D initTexture = LoadTexture("../resources/textures/entities.png");
+    const Texture2D initTexture = LoadTexture(ASSETS_PATH "textures/entities.png");
     this->texture = initTexture;
     this->speed = 120.0f;
     this->health = 2.0f;
