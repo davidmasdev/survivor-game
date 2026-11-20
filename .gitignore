@@ -4,3 +4,5 @@ cmake-build-*/
 *.o
 *.so
 *.a
+# Dear ImGui window state
+imgui.ini
